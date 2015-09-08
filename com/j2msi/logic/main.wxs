@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<?include $(sys.CURRENTDIR)\ludeVariables.wxi ?> 
+ <!-- 
+ C:\Documents and Settings\xx\Desktop\formfragment\exefolder\exedir\bundles\EXEapp
+ 
+ <?define Basefolder="C:\Documents and Settings\xx\Desktop\formfragment\exefolder\exedir\bundles\EXEapp\"?>    
+<?define BasefolderApp="C:\Documents and Settings\xx\Desktop\formfragment\exefolder\exedir\bundles\EXEapp\app\"?>   
+<?define Basefoldershort="C:\Documents and Settings\xx\Desktop\formfragment\exefolder\exedir\bundles\EXEapp"?>    
+<?define installfolderName="  Ashely" ?>
+<?define ProductName="Ashely" ?>
+<?define ManufacturerName=" " ?>
+<?define ExeName="Ashely.exe" ?>
+ -->
+  
+
+          <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="1.0.0.0" Manufacturer="my" UpgradeCode="1de12ee7-2e94-42ac-979f-06245a0ade30">
+                    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+                    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+ 
+ 
+				<UIRef Id="WixUI_InstallDir" /> 		
+				<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />	 
+				
+			    <Icon Id="icon.ico" SourceFile="$(var.Basefolder)\$(var.ProductName).ico"/>					
+				
+                    <Directory Id="TARGETDIR" Name="SourceDir">
+                             <Directory Id="ProgramFilesFolder">
+							 <!-- 
+                                    <Directory Id="installfolder" Name="testfragment"/>	
+							 -->
+							 <Directory Id="INSTALLFOLDER" Name="$(var.installfolderName)"/>	
+							 
+									<Directory Id="ProgramMenuFolder">
+										<Directory Id="MyShortcutsDir" Name="$(var.installfolderName)" />
+									</Directory>
+									
+									<Directory Id="DesktopFolder" Name="Desktop" />									
+                             </Directory> 									
+                    </Directory>
+					
+					<DirectoryRef Id="DesktopFolder">
+							<Component Id="CMP_DesktopFolderShortcut" Guid="33741C82-30BF-41AF-8246-44A5DCFCF951">
+							<!--
+									 Target="[INSTALLFOLDER]$(var.ExeName)" 
+							-->	
+									   <Shortcut Id="DesktopShortcut"
+										Name="$(var.ProductName)"
+										Description="run $(var.ProductName)"	
+										Directory="DesktopFolder"		
+										WorkingDirectory="INSTALLFOLDER"									
+										Target="[INSTALLFOLDER]\$(var.ProductName)\$(var.ExeName)" 
+										
+										Icon="icon.ico"
+										/>
+										
+									   <RemoveFolder Id="DesktopFolder"	On="uninstall" />
+									   <RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.ProductName)"
+										Name="installedDesktopshortcut"	Type="integer"	Value="2"	KeyPath="yes"
+										/>
+							</Component>
+					</DirectoryRef>
+				
+					<DirectoryRef Id="MyShortcutsDir">
+							<Component Id="CMP_DocumentationShortcut" Guid="33741C82-30BF-41AF-8246-44A5DCFCF953">
+							 
+							   
+									<Shortcut Id="StartMenuShortcut"
+									Name="$(var.ProductName)"
+									Description="run $(var.ProductName)"							 
+									 
+									Target="[INSTALLFOLDER]\$(var.ProductName)\$(var.ExeName)" 
+									Icon="icon.ico"
+									/>
+									
+									<Shortcut Id="UninstallShortcut"
+										Name="Uninstall $(var.ProductName)"
+										Description="Uninstallsashely and all of its components"
+										Target="[System64Folder]msiexec.exe"
+										Arguments="/x [ProductCode]" 
+									/>
+									
+									<Shortcut Id="README"
+									Name="$(var.ProductName) README"
+									Description="README"
+									Target="[INSTALLFOLDER]InstallMe.txt" 								
+									/>
+									
+									<RemoveFolder Id="MyShortcutsDir"	On="uninstall" />
+									
+									<RemoveFolder Id="INSTALLFOLDER"	On="uninstall" />
+									
+									<RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.ProductName)"
+									Name="installed"	Type="integer"	Value="1"	KeyPath="yes"
+									/>
+							</Component>
+					</DirectoryRef>
+                
+                    <Feature Id="ProductFeature" Title="testfragment" Level="1">						
+								<ComponentGroupRef Id="MyAppGroup" />
+								<ComponentRef Id="CMP_DesktopFolderShortcut" />
+								<ComponentRef Id="CMP_DocumentationShortcut" />
+                    </Feature>
+					
+          </Product>
+ </Wix>
