@@ -26,12 +26,7 @@ public class UIEntry implements ActionListener {
 	JTextField f6;
 	JTextField f7;
 	private Comandrun cmdrun;
-
-	
-	//1 need install "WiX Toolset v3.9"
-	//2 need add "C:\Program Files\WiX Toolset v3.9\bin" to System path
-	//3 jdkpath must be sign
-	
+ 
 	// Specify the look and feel to use by defining the LOOKANDFEEL constant
 	// Valid values are: null (use the default), "Metal", "System", "Motif",
 	// and "GTK"
@@ -532,27 +527,24 @@ public class UIEntry implements ActionListener {
 					.showMessageDialog(null, " installfoldername is NULL ! ");
 		}
 		if (f6.getText().equals("")) {
-			flag = true;
-			JOptionPane.showMessageDialog(null, " standlonejre is NULL ! ");
+			//flag = true;
+			//JOptionPane.showMessageDialog(null, " standlonejre is NULL ! ");
 		}
 		if (f7.getText().equals("")) {
-			flag = true;
-			JOptionPane.showMessageDialog(null, " jdkpath is NULL ! ");
+			//flag = true;
+			//JOptionPane.showMessageDialog(null, " jdkpath is NULL ! ");
 		}
 
 		return flag;
 	}
 
 	public void ontoInstaller() {
-		//1 need install "WiX Toolset v3.9"
-				//2 need add "C:\Program Files\WiX Toolset v3.9\bin" to System path
-				//3 jdkpath must be sign
 		
 		String tips="Frist: need install \"WiX Toolset v3.9.\"\n"
 				+"Second: need add \"C:\\Program Files\\WiX Toolset v3.9\\bin\" to System path.\n"
 				+"Third: \"jdkpath\" must be sign.";
 		
-		JOptionPane.showMessageDialog(null,	tips);
+		//JOptionPane.showMessageDialog(null,	tips);
 		
 		if (checkEmpty()) {
 			return;
@@ -560,6 +552,10 @@ public class UIEntry implements ActionListener {
 		// cmdrun=new Comandrun();
 
 		cmdrun = new Comandrun();
+	
+		cmdrun.copyWixtotemp();
+		System.out.println(" copyWixtotemp finish !");
+		
 		cmdrun.setP_APPname(f1.getText());
 		// source folder
 		// String p_sourcebase =
@@ -601,6 +597,8 @@ public class UIEntry implements ActionListener {
 		JOptionPane.showMessageDialog(null,
 				"Installer has formed!  folder is: " + cmdrun.getP_targetbase()
 						+ cmdrun.getWixscript());
+		
+		cmdrun.CleanTempWix();
 	}
 
 	private static void initLookAndFeel() {
