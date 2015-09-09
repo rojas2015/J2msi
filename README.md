@@ -21,4 +21,11 @@ package exe to easy installer
     so that the java8 version of the javaFX to the java6 is very easy to change to the java6 can only use SWING very painful.
 
     follow is the screenshot:
+    ![image](http://images2015.cnblogs.com/blog/578685/201509/578685-20150909144008872-2125283594.jpg)  
+    
+    download address： http://files.cnblogs.com/files/rojas/J2MSI.zip
+
+    source code： http://files.cnblogs.com/files/rojas/j2msiSource.zip
+
+    Note: Please attach the following address  http://www.cnblogs.com/rojas/p/4794684.html
 
