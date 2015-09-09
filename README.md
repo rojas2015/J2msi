@@ -19,6 +19,8 @@ package exe to easy installer
     but running on the need to install java8,
     And most of the cases are fitted with the java6, 
     so that the java8 version of the javaFX to the java6 is very easy to change to the java6 can only use SWING very painful.
+    
+    
 
     follow is the screenshot:
     
