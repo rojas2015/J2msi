@@ -29,6 +29,16 @@ import java.util.logging.Logger;
  * @author Mr xxx
  */
 public class Comandrun {
+ 
+	//String targetfilewix=System.getProperty("user.home")+"\\wix";
+	//String targetfilewix="C:\\Documents and Settings\\xxx\\wix";
+	String targetfilewix="C:\\wix";
+	//String targetfilewix="C:\\Documents and Settings\\xxx\\Desktop\\abc"+"\\wix";
+	//System.getProperty("java.io.tmpdir");
+	
+	//String targetfilewix=System.getProperty("java.io.tmpdir")+"wix";
+	//String targetfilewix="C:\\"+"\\wix";
+	String targetfilepath=targetfilewix+"\\bin\\";
 
     //String p_APPname = "EXEapp";
     // String installfolderName = "My" + p_APPname;
@@ -116,13 +126,16 @@ public class Comandrun {
 
         String url1 = getStandloneJre();
         String url2 = filepaths+"\\jre" ;
-        
-        //clean  
-        DeleteFolder df = new DeleteFolder();
-        df.delAllFile(url2);
+        if(!url1.equals("")&&url1!=null){
+        	 //clean  
+            DeleteFolder df = new DeleteFolder();
+            df.delAllFile(url2);
 
-        CopyAll bp = new CopyAll();
-        bp.copyFolder(url1, url2);
+            CopyAll bp = new CopyAll();
+            bp.copyFolder(url1, url2);
+        }
+        
+       
         
 //         String targetfilepath_2 =  url2 + "\\bin\\" + "msvcr100.dll";
 //        String fileinjarpath_2="/j2msi/logic/msvcr100.dll";
@@ -193,27 +206,7 @@ public class Comandrun {
   
     }
 
-    //folder exedir  
-    public static void main(String[] args) {
-        // System.out.println(" crun  path"+Class.class.getClass().getResource("/").getPath());
-
-        Comandrun c = new Comandrun();
-       // c.productHeatfilestest("");
-        //test create folder 
-       // c.CreateWixscriptFolder();
-
-//        c.productExe();
-      
-      //  c.productHeatfilestest("");
-        
-        
-//        c.productludeVariables("");
-//        c.writerludeVariablestoTagetfiles(c.getMain_wxsName());
-//        c.writerludeVariablestoTagetfiles(c.getHeatfile_AppwxsName());
-//        c.productInstaller("");
-        // copy WixUIExtension.dll
-        //productMainwxs()   // Mainwxs  need to complete  template 
-    }
+   
 
     public boolean productExe() {
 
@@ -259,25 +252,95 @@ public class Comandrun {
 				e.printStackTrace();
 			}
 
-            
-
-         
         //Logger.getLogger(Comandrun.class.getName()).log(Level.SEVERE, null, ex);
         //ShowDialogbox("Exe has formed! folder is:" + filepaths);
 
         return issuccess;
     }
+
+	String[] classNames = { "candle.exe", "candle.exe.config", "darice.cub",
+			"dark.exe", "dark.exe.config", "difxapp_x64.wixlib",
+			"difxapp_x86.wixlib", "heat.exe", "heat.exe.config",
+			"insignia.exe", "insignia.exe.config", "light.exe",
+			"light.exe.config", "lit.exe", "lit.exe.config", "lux.exe",
+			"lux.exe.config", "LuxTasks.dll", "melt.exe", "melt.exe.config",
+			"mergemod.cub", "mergemod.dll",
+			"Microsoft.Deployment.Compression.Cab.dll",
+			"Microsoft.Deployment.Compression.dll",
+			"Microsoft.Deployment.Resources.dll",
+			"Microsoft.Deployment.WindowsInstaller.dll",
+			"Microsoft.Deployment.WindowsInstaller.Package.dll",
+			"mspatchc.dll", "nit.exe", "nit.exe.config", "pyro.exe",
+			"pyro.exe.config", "shine.exe", "shine.exe.config", "smoke.exe",
+			"smoke.exe.config", "ThmViewer.exe", "torch.exe",
+			"torch.exe.config", "wconsole.dll", "winterop.dll", "wix.dll",
+			"WixBalExtension.dll", "WixComPlusExtension.dll", "WixCop.exe",
+			"WixDependencyExtension.dll", "WixDifxAppExtension.dll",
+			"WixDirectXExtension.dll", "WixFirewallExtension.dll",
+			"WixGamingExtension.dll", "WixIIsExtension.dll",
+			"WixLuxExtension.dll", "WixMsmqExtension.dll",
+			"WixNetFxExtension.dll", "WixPSExtension.dll",
+			"WixSqlExtension.dll", "WixTagExtension.dll", "WixTasks.dll",
+			"WixUIExtension.dll", "WixUtilExtension.dll", "WixVSExtension.dll"
+
+	};
+    public void copyWixtotemp() {
+    	
+    	File fbase=new File(targetfilepath);
+    	if(!fbase.exists()){
+    		fbase.mkdirs();
+    	}
+     
+        //InputStream  input=Comandrun.class.getResourceAsStream(fileinjarpath);
+     	String packageName="com/wix/bin/";
+		//List<String> classNames = PackageUtil.getClassName(packageName, false);
+		System.out.println("copyWixtotemp classNames--->"+classNames);
+		if (classNames != null) {
+			for (String className : classNames) {
+				//String filename=className.substring(className.lastIndexOf("\\")+1);
+				String filename=className;
+				CopyAll.copyFilefromjarv2(Comandrun.class,targetfilepath+filename, "/"+packageName+filename);
+			}
+		}
+		    
+    }
     
+    public void CleanTempWix(){
+    	DeleteFolder df = new DeleteFolder();
+        df.delAllFile(targetfilewix);
+    }
+    
+    //folder exedir  
+    public static void main(String[] args) {
+    	
+        Comandrun c = new Comandrun();
+      // System.out.println(c.getFileRealPath("")) ;
+       //c.copyWixtotemp();
+     
+		  //c.productHeatfilestest("");
+		//test create folder 
+		   // c.CreateWixscriptFolder();
+		
+		//        c.productExe();
+		  
+		  //  c.productHeatfilestest("");
+		
+		
+		//        c.productludeVariables("");
+		//        c.writerludeVariablestoTagetfiles(c.getMain_wxsName());
+		//        c.writerludeVariablestoTagetfiles(c.getHeatfile_AppwxsName());
+		//        c.productInstaller("");
+		// copy WixUIExtension.dll
+		//productMainwxs()   // Mainwxs  need to complete  template 
+		   
+     
+    }
      public boolean productHeatfiles(String filepath) {
 
-        //heat dir "C:\Documents and Settings\xxxff\Desktop\formfragment\exefolder\exedir\bundles\EXEapp" -dr installfolder -cg MyExeGroup -gg -gl -sf - srd -var "var.exefolder" -out ".\heatfile_Exe.wxs"
-        //String cmdHeatstr = "heat.exe dir \"" + getFilepaths() + "\" -dr INSTALLFOLDER -cg MyAppGroup -gg -gl -sf - srd -var \"var.exefolder\" -out \"" + this.getP_targetbase() + wixscript + "\\heatfile_App.wxs\"";
-        //String cmdHeatstr = "heat.exe dir \"" + st + "\" -dr INSTALLFOLDER -cg MyAppGroup -sreg -var \"var.exefolder\" -out \"" + tt;
-        String cmdHeatstr = "heat.exe dir \"" + getFilepaths() + "\" -dr INSTALLFOLDER -cg MyAppGroup -gg -sreg -var \"var.exefolder\" -out \"" + this.getP_targetbase() + wixscript +"\\"+ "heatfile_App.wxs";
-            //String cmdstr="heat dir \""+filepaths+"\\\" -dr installfolder -cg MyAppGroup -gg -gl -sf - srd -var \"var.exefolder\" -out .\\heatfile_App.wxs";  
-
-        //  C:\Documents and Settings\xxxff\Desktop\formfragment\wixscript
-        //File dir = new File(this.getP_targetbase() + wixscript);
+         //heat dir "C:\Documents and Settings\xxxff\Desktop\formfragment\exefolder\exedir\bundles\EXEapp" -dr installfolder -cg MyExeGroup -gg -gl -sf - srd -var "var.exefolder" -out ".\heatfile_Exe.wxs"
+    	 //String cmdHeatstr ="\""+targetfilepath+"heat.exe"+ " dir\" \"" + getFilepaths() + "\" -dr INSTALLFOLDER -cg MyAppGroup -gg -sreg -var \"var.exefolder\" -out \"" + this.getP_targetbase() + wixscript +"\\"+ "heatfile_App.wxs";
+    	  String cmdHeatstr = targetfilepath+"heat.exe "+ " dir \"" + getFilepaths() + "\" -dr INSTALLFOLDER -cg MyAppGroup -gg -sreg -var \"var.exefolder\" -out \"" + this.getP_targetbase() + wixscript +"\\"+ "heatfile_App.wxs";
+    
         File dir = new File(getP_targetbase() + wixscript);
 
         Process p;
@@ -294,8 +357,8 @@ public class Comandrun {
 
 	            p.waitFor();
 
-//	            long keep=10;
-//	             p.waitFor(keep,TimeUnit.SECONDS);
+				//long keep=10;
+				//p.waitFor(keep,TimeUnit.SECONDS);
 	            System.out.println(" productHeatfiles executed  time last!");
 
 	            p.destroy();
@@ -306,59 +369,11 @@ public class Comandrun {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-            
-        
-        //Logger.getLogger(Comandrun.class.getName()).log(Level.SEVERE, null, ex);
+ 
         boolean issuccess = false;
-
         return issuccess;
     }
-
-//    public boolean productHeatfilestest(String filepath) {
-//
-//        //heat dir "C:\Documents and Settings\xxxff\Desktop\formfragment\exefolder\exedir\bundles\EXEapp" -dr installfolder -cg MyExeGroup -gg -gl -sf - srd -var "var.exefolder" -out ".\heatfile_Exe.wxs"
-//        //String cmdHeatstr = "heat.exe dir \"" + getFilepaths() + "\" -dr INSTALLFOLDER -cg MyAppGroup -gg -gl -sf - srd -var \"var.exefolder\" -out \"" + this.getP_targetbase() + wixscript + "\\heatfile_App.wxs\"";
-//        
-//        String st="C:\\Documents and Settings\\xxxff\\Desktop\\a2000\\exefolder\\exedir\\bundles\\vvv\\runtime";
-//        String tt="C:\\Documents and Settings\\xxxff\\Desktop\\a2000\\wixscript\\heatfile_MSDLL.wxs";
-//        
-//      //String cmdHeatstr="heat dir \""+filepaths+"\\\" -dr installfolder -cg MyAppGroup -gg -gl -sf - srd -var \"var.exefolder\" -out .\\heatfile_App.wxs";  
-//      String cmdHeatstr = "heat.exe dir \"" + st + "\" -dr INSTALLFOLDER -cg MyAppGroup -gg -gl -sf - srd -var \"var.exefolder\" -out \"" + tt;
-//        
-//        //  C:\Documents and Settings\xxxff\Desktop\formfragment\wixscript
-//        //File dir = new File(this.getP_targetbase() + wixscript);
-//        
-//        
-//        File dir = new File("C:\\Documents and Settings\\xxxff\\Desktop\\a2000\\wixscript");
-//
-//        Process p;
-//        try {
-//            p = Runtime.getRuntime().exec(cmdHeatstr, null, dir);
-//
-//            StreamGobbler errorGobbler = new StreamGobbler(p.getErrorStream(), "ERROR");
-//            // kick off stderr  
-//            errorGobbler.start();
-//
-//            StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "STDOUT");
-//            // kick off stdout  
-//            outGobbler.start();
-//
-//            p.waitFor();
-//
-////            long keep=10;
-////             p.waitFor(keep,TimeUnit.SECONDS);
-//            System.out.println(" productHeatfiles executed  time last!");
-//
-//            p.destroy();
-//        } catch (IOException | InterruptedException ex) {
-//            Logger.getLogger(Comandrun.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        boolean issuccess = false;
-//
-//        return issuccess;
-//    }
+ 
 
     // include ludeVariables.wxi  to Heatfiles
     // <?include $(sys.CURRENTDIR)\ludeVariables.wxi ?>
@@ -418,9 +433,7 @@ public class Comandrun {
                       Logger.getLogger(Comandrun.class.getName()).log(Level.SEVERE, null, ex);
                   }
               }
-              
-              //StringBuilder  snew= new StringBuilder();  
-              //StringBuilder  sbak= new StringBuilder(s.toString());  
+      
               String stnew= "<?"+s.toString().substring(s.toString().indexOf("xml"));
               
         	
@@ -436,20 +449,7 @@ public class Comandrun {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-        
-//        try {
-//            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
-//               bw.write(s.toString(), 2, s.toString().length()-2);
-//                //bw.write(s.toString());
-//                     bw.flush();
-//                System.out.println(s.toString());
-//                bw.close();
-//            }
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(Comandrun.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+ 
     }
 
     //ludeVariables.wxi  
@@ -508,12 +508,12 @@ public class Comandrun {
 
     public boolean productInstaller(String filepath) {
 
-            //candle.exe main.wxs heatfile_App.wxs  
+        //candle.exe main.wxs heatfile_App.wxs  
         //light.exe -out testfragment.msi main.wixobj heatfile_App.wixobj
         // String filepaths=p_sourcebase+wixscript+"\\"+main_wxsName;
         //heat dir "C:\Documents and Settings\xxxff\Desktop\formfragment\exefolder\exedir\bundles\EXEapp" -dr installfolder -cg MyExeGroup -gg -gl -sf - srd -var "var.exefolder" -out ".\heatfile_Exe.wxs"
-        String cmdstr_candle = "candle.exe main.wxs heatfile_App.wxs ludeVariables.wxi";
-        String cmdstr_light = "light.exe -out " + this.getP_APPname() + ".msi main.wixobj heatfile_App.wixobj -ext WixUIExtension.dll";
+        String cmdstr_candle =targetfilepath+"candle.exe"+  " main.wxs heatfile_App.wxs ludeVariables.wxi";
+        String cmdstr_light =targetfilepath+"light.exe"+ " -out " + this.getP_APPname() + ".msi main.wixobj heatfile_App.wixobj -ext WixUIExtension.dll";
 
         //  C:\Documents and Settings\xxxff\Desktop\formfragment\wixscript
         File dir = new File(getP_targetbase() + wixscript);
@@ -533,7 +533,6 @@ public class Comandrun {
 	            outGobbler.start();
 
 	            p.waitFor();
-
 	            //             long keep=20;
 	            //             p.waitFor(keep,TimeUnit.SECONDS);
 	            //            System.out.println(" productInstaller   candle executed  time last!"); 
@@ -545,15 +544,11 @@ public class Comandrun {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-            
-
         
 
         long begin = System.currentTimeMillis();
 
         //light  
-       
 
             try {
 				p = Runtime.getRuntime().exec(cmdstr_light, null, dir);
@@ -730,19 +725,7 @@ public class Comandrun {
 
     //ShowDialogbox("Exe has formed! folder is:");
     public   void ShowDialogbox(String messages) {
-
-//        JAlert alert = new Alert(AlertType.INFORMATION);
-//        alert.setTitle("Information ");
-//        alert.setHeaderText(null);
-//        alert.setContentText(messages);
-
-        //alert.showAndWait();
-
-        //        Stage dialog = new Stage();
-        //        dialog.initStyle(StageStyle.UTILITY);
-        //        Scene scene = new Scene(new Group(new Text(25, 25, messages)));
-        //        dialog.setScene(scene);
-        //        dialog.show();
+ 
     }
 
     /**
